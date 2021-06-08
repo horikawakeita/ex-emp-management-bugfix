@@ -27,9 +27,12 @@ public class EmployeeService {
 	 * 
 	 * @return　従業員情報一覧
 	 */
-	public List<Employee> showList() {
-		List<Employee> employeeList = employeeRepository.findAll();
-		return employeeList;
+	public List<Employee> showList(String searchName) {
+		if(searchName == null){
+			return employeeRepository.findAll();
+		}else{
+			return employeeRepository.ambiguousFind(searchName);
+		}
 	}
 	
 	/**

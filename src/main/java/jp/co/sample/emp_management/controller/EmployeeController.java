@@ -47,8 +47,12 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(Model model) {
-		List<Employee> employeeList = employeeService.showList();
+	public String showList(String searchName, Model model) {
+		List<Employee> employeeList = employeeService.showList(searchName);
+		if(employeeList.isEmpty()){
+			model.addAttribute("nomatch", "１件もありませんでした");
+			employeeList = employeeService.showList(null);
+		}
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}
