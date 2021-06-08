@@ -79,6 +79,10 @@ public class AdministratorController {
 			result.rejectValue("mailAddress", "", "そのメールアドレスは既に登録されています");
 		}
 
+		if(!(form.getMailAddress().equals(form.getConfirm()) || form.getConfirm() == null)){
+			result.rejectValue("confirm", "", "確認用パスワードが一致していません");
+		}
+
 		if (result.hasErrors()) {
 			return "administrator/insert";
 		}
