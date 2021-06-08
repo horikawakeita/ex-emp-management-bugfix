@@ -64,6 +64,20 @@
 
 <!-- ここにモックのtable要素を貼り付けます -->
 
+<!-- 検索機能 -->
+<div>
+	<form th:action="@{/employee/showList}">
+	<label for="search">
+		従業員検索フォーム（何も入力しないまたは一致する従業員がいない場合、全件表示されます）
+	</label>
+	<input type="text" name="searchName" id="search" class="form-control" placeholder="検索したい名前の一部を入力してください">
+	<span th:if="${nomatch}" th:text="${nomatch}" style="color: red;"></span><br>
+	<button>検索</button>
+	<button type="reset">クリア</button>
+	</form>
+</div>
+<br>
+
 				<table class="table table-striped">
 					<thead>
 						<tr>
