@@ -1,6 +1,5 @@
 package jp.co.sample.emp_management.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,15 +48,10 @@ public class EmployeeController {
 	 */
 	@RequestMapping("/showList")
 	public String showList(String searchName, Model model) {
-		List<Employee> employeeList = new ArrayList<>();
-		if(searchName != null){
-			employeeList = employeeService.showListByName(searchName);
-			if(employeeList.isEmpty()){
-				model.addAttribute("nomatch", "１件もありませんでした");
-				employeeList = employeeService.showList();
-			}
-		}else{
-			employeeList = employeeService.showList();
+		List<Employee> employeeList = employeeService.showList(searchName);
+		if(employeeList.isEmpty()){
+			model.addAttribute("nomatch", "１件もありませんでした");
+			employeeList = employeeService.showList(null);
 		}
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";

@@ -27,9 +27,12 @@ public class EmployeeService {
 	 * 
 	 * @return　従業員情報一覧
 	 */
-	public List<Employee> showList() {
-		List<Employee> employeeList = employeeRepository.findAll();
-		return employeeList;
+	public List<Employee> showList(String searchName) {
+		if(searchName == null){
+			return employeeRepository.findAll();
+		}else{
+			return employeeRepository.ambiguousFind(searchName);
+		}
 	}
 	
 	/**
@@ -51,15 +54,5 @@ public class EmployeeService {
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
-	}
-
-	/**
-	 * 従業員情報をあいまい検索します.
-	 * 
-	 * @return 従業員情報一覧
-	 */
-	public List<Employee> showListByName(String searchName) {
-		List<Employee> employeeList = employeeRepository.ambiguousFind(searchName);
-		return employeeList;
 	}
 }
