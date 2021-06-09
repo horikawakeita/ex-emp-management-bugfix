@@ -108,7 +108,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="employee : ${employeeList}">
+						<tr th:each="employee : ${employeePage.content}">
 							<td>
 								<a href="detail.html" th:href="@{'/employee/showDetail?id=' + ${employee.id}}">
 									<span th:text="${employee.name}">山田太郎</span>
@@ -123,6 +123,10 @@
 						</tr>
 					</tbody>
 				</table>
+
+				<span th:if="${employeePage.totalPages > 0}" th:each="pageNumber : ${pageNumbers}">
+					<a th:href="@{/employee/showList(size=${employeePage.size},page=${pageNumber},searchName=${searchName})}" th:text="${pageNumber}"></a>
+				</span>
 
 
 <!-- ここから下を編集する必要はありません -->
