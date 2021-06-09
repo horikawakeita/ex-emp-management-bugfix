@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
@@ -57,7 +58,7 @@ public class EmployeeController {
 			model.addAttribute("nomatch", "１件もありませんでした");
 			employeeList = employeeService.showList(null);
 		}
-		model.addAttribute("employeeList", employeeList);
+//		model.addAttribute("employeeList", employeeList);
 
 		if (page == null) {
 			page = 1;
@@ -77,8 +78,15 @@ public class EmployeeController {
 		model.addAttribute("pageNumbers", pageNumList);
 
 		model.addAttribute("searchName", searchName);
+		model.addAttribute("autoComplete", employeeService.findAllForAutoComplete());
 
 		return "employee/list";
+	}
+
+	@ResponseBody
+	@RequestMapping("/getAutoComplete")
+	public String GetAutoComplete(){
+		return employeeService.findAllForAutoComplete();
 	}
 
 	
