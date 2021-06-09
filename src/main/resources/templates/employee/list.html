@@ -13,6 +13,27 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+		$(function(){
+			$.ajax({
+				/** オートコンプリート用のリストを取得するURL*/
+				url: "/employee/getAutoComplete",
+				dataType: "json",
+				type: 'GET'
+			}).then(function(searchResult){ /** 検索結果のリストは引数に自動で入る*/
+				$('#search').autocomplete({ /** 実装したい入力欄のid/classを指定*/
+					source : searchResult, /** 候補リスト(必須)*/
+					autoFocus: true, /**リスト表示に際してリスト先頭にフォーカスするか*/
+					delay: 500, /**キー入力からリスト表示までの遅延時間（ミリ秒）*/
+					minLength: 1 /**オートコンプリート機能が働く最小文字数*/
+				});
+				},function(){
+			});
+		});
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -66,7 +87,7 @@
 
 <!-- 検索機能 -->
 <div>
-	<form th:action="@{/employee/showList}">
+	<form th:action="@{/employee/showList}" method="POST">
 	<label for="search">
 		従業員検索フォーム（何も入力しないまたは一致する従業員がいない場合、全件表示されます）
 	</label>
@@ -111,8 +132,6 @@
 	</div>
 	<!-- end container -->
 	
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="../../static/js/bootstrap.min.js"></script>
 </body>
 </html>

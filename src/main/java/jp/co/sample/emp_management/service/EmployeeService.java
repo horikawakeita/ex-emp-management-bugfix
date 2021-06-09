@@ -1,5 +1,6 @@
 package jp.co.sample.emp_management.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.repository.EmployeeRepository;
+import net.arnx.jsonic.JSON;
 
 /**
  * 従業員情報を操作するサービス.
@@ -54,5 +56,18 @@ public class EmployeeService {
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
+	}
+
+	/**
+	 * オートコンプリート用に従業員の名前一覧を作る．
+	 * 
+	 * @return JSON形式の名前リスト
+	 */
+	public String findAllForAutoComplete(){
+		List<String> nameList = new ArrayList<>();
+		for (Employee employee : employeeRepository.findAll()) {
+			nameList.add(employee.getName());
+		}
+		return JSON.encode(nameList);
 	}
 }
