@@ -1,5 +1,6 @@
 package jp.co.sample.emp_management.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService employeeService;
+
+	/** １ページの表示数 */
+    private final int VIEW_LIMIT = 10;
 	
 	/**
 	 * 使用するフォームオブジェクトをリクエストスコープに格納する.
@@ -47,13 +51,33 @@ public class EmployeeController {
 	 * @return 従業員一覧画面
 	 */
 	@RequestMapping("/showList")
-	public String showList(String searchName, Model model) {
+	public String showList(String searchName, Integer page, Model model) {
 		List<Employee> employeeList = employeeService.showList(searchName);
 		if(employeeList.isEmpty()){
 			model.addAttribute("nomatch", "１件もありませんでした");
 			employeeList = employeeService.showList(null);
 		}
 		model.addAttribute("employeeList", employeeList);
+
+		if (page == null) {
+			page = 1;
+		}
+
+		model.addAttribute("employeePage", employeeService.showPage(page, VIEW_LIMIT, employeeList));
+
+		int pageNum = employeeList.size() / VIEW_LIMIT;
+		if(employeeList.size() % VIEW_LIMIT != 0){
+			pageNum++;
+		}
+		List<Integer> pageNumList = new ArrayList<>();
+		for(int i = 1; i <= pageNum; i++){
+			pageNumList.add(i);
+		}
+
+		model.addAttribute("pageNumbers", pageNumList);
+
+		model.addAttribute("searchName", searchName);
+
 		return "employee/list";
 	}
 

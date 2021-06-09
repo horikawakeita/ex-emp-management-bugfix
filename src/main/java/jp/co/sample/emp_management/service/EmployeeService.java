@@ -3,6 +3,10 @@ package jp.co.sample.emp_management.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,5 +58,13 @@ public class EmployeeService {
 	 */
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
+	}
+
+	public Page<Employee> showPage(int page, int size, List<Employee> employeeList){
+		int fromIndex = (page - 1) * size;
+		int toIndex = Math.min(employeeList.size(), fromIndex + size);
+		employeeList = employeeList.subList(fromIndex, toIndex);
+		Pageable pageable = PageRequest.of(page, size);
+		return new PageImpl<Employee>(employeeList, pageable, employeeList.size());
 	}
 }
