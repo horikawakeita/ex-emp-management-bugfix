@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.co.sample.emp_management.domain.Employee;
 import jp.co.sample.emp_management.form.UpdateEmployeeForm;
@@ -54,7 +55,16 @@ public class EmployeeController {
 			employeeList = employeeService.showList(null);
 		}
 		model.addAttribute("employeeList", employeeList);
+
+		model.addAttribute("autoComplete", employeeService.findAllForAutoComplete());
+
 		return "employee/list";
+	}
+
+	@ResponseBody
+	@RequestMapping("/getAutoComplete")
+	public String GetAutoComplete(){
+		return employeeService.findAllForAutoComplete();
 	}
 
 	
